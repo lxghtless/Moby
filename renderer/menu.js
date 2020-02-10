@@ -59,6 +59,13 @@ const template = [
       {
         label: 'Import Tasks',
         click () { window.importTasksMenu() }
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Settings',
+        click () { window.openSettings() }
       }
     ]
   },

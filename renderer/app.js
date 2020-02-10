@@ -2,6 +2,7 @@
 // Modules and variable definition
 const { ipcRenderer } = require('electron')
 const tasks = require('./tasks')
+const appSettings = require('./settings')
 require('bootstrap/js/dist/modal')
 require('./menu.js')
 const customTitlebar = require('custom-electron-titlebar')
@@ -196,6 +197,11 @@ window.exportTasksMenu = () => {
 // Task menu commands; Import all tasks
 window.importTasksMenu = () => {
   tasks.importTasks()
+}
+
+window.openSettings = () => {
+  appSettings.load()
+  $('#settings-modal').modal('show')
 }
 
 // Task modal load event

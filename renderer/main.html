@@ -1,255 +1,331 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Moby</title>
-    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="var.css">
-    <link rel="stylesheet" href="main.css">
-  </head>
-  <body id="main-window">
-    <div class="wrapper">
-      <div class="menu">
-        <span href="#restore-modal" data-toggle="modal">
-          <div class="menu-item fas fa-archive fa-2x" data-toggle="tooltip" title="Restore from Archive" style="padding-top: 0;"></div>
-        </span>
-        <span href="#schedule-modal" data-toggle="modal">
-          <div class="menu-item fas fa-calendar fa-2x" data-toggle="tooltip" title="Scheduled Tasks"></div>
-        </span>
-        <div class="menu-item fas fa-expand-arrows-alt fa-2x" data-toggle="tooltip" title="Expand All" onclick="expandAll(event)"></div>
-        <div class="menu-item fas fa-compress-arrows-alt fa-2x" data-toggle="tooltip" title="Collapse All" onclick="collapseAll(event)"></div>
-        <div class="menu-item fas fa-sign-out-alt fa-2x" data-toggle="tooltip" title="Exit" onclick="exit(event)"></div>
-        <div class="theme-toggle" data-toggle="tooltip" title="Filter Tasks">
-          <div class="color-item fas fa-square fa-2x color-1" id="theme1-button" data-theme-id="1" onclick="toggleThemeClick(event)"></div>
-          <div class="color-item fas fa-square fa-2x color-2" id="theme2-button" data-theme-id="2" onclick="toggleThemeClick(event)"></div>
-          <div class="color-item fas fa-square fa-2x color-3" id="theme3-button" data-theme-id="3" onclick="toggleThemeClick(event)"></div>
-          <div class="color-item fas fa-square fa-2x color-4" id="theme4-button" data-theme-id="4" onclick="toggleThemeClick(event)"></div>
-          <div class="color-item fas fa-square fa-2x color-5" id="theme5-button" data-theme-id="5" onclick="toggleThemeClick(event)"></div>
-        </div>
-      </div> 
-      <div class="host" id="host-do" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <div class="header th" contenteditable="true">Do</div>
-        <div class="box" id="col-do"></div>
-        <div class="footer fas fa-plus fa-2x" href="#task-modal" data-toggle="modal" data-status-id="Do" data-type-id="new"></div>
-      </div>
-      <div class="host" id="host-today" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <div class="header th" contenteditable="true">Today</div>
-        <div class="box" id="col-today"></div>
-        <div class="footer fas fa-plus fa-2x" href="#task-modal" data-toggle="modal" data-status-id="Today" data-type-id="new"></div>
-      </div>
-      <div class="host" id="host-doing" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <div class="header th" contenteditable="true">Doing</div>
-        <div class="box" id="col-doing" ></div>
-        <div class="footer fas fa-plus fa-2x" href="#task-modal" data-toggle="modal" data-status-id="Doing" data-type-id="new"></div>
-      </div>
-      <div class="host" id="host-done" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <div class="header th">Done</div>
-        <div class="box" id="col-done"></div>
-        <div class="footer fas fa-plus fa-2x" href="#task-modal" data-toggle="modal" data-status-id="Done" data-type-id="new"></div>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Moby</title>
+  <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="var.css">
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body id="main-window">
+  <div class="wrapper">
+    <div class="menu">
+      <span href="#restore-modal" data-toggle="modal">
+        <div class="menu-item fas fa-archive fa-2x" data-toggle="tooltip" title="Restore from Archive"
+          style="padding-top: 0;"></div>
+      </span>
+      <span href="#schedule-modal" data-toggle="modal">
+        <div class="menu-item fas fa-calendar fa-2x" data-toggle="tooltip" title="Scheduled Tasks"></div>
+      </span>
+      <div class="menu-item fas fa-expand-arrows-alt fa-2x" data-toggle="tooltip" title="Expand All"
+        onclick="expandAll(event)"></div>
+      <div class="menu-item fas fa-compress-arrows-alt fa-2x" data-toggle="tooltip" title="Collapse All"
+        onclick="collapseAll(event)"></div>
+      <div class="menu-item fas fa-sign-out-alt fa-2x" data-toggle="tooltip" title="Exit" onclick="exit(event)"></div>
+      <div class="theme-toggle" data-toggle="tooltip" title="Filter Tasks">
+        <div class="color-item fas fa-square fa-2x color-1" id="theme1-button" data-theme-id="1"
+          onclick="toggleThemeClick(event)"></div>
+        <div class="color-item fas fa-square fa-2x color-2" id="theme2-button" data-theme-id="2"
+          onclick="toggleThemeClick(event)"></div>
+        <div class="color-item fas fa-square fa-2x color-3" id="theme3-button" data-theme-id="3"
+          onclick="toggleThemeClick(event)"></div>
+        <div class="color-item fas fa-square fa-2x color-4" id="theme4-button" data-theme-id="4"
+          onclick="toggleThemeClick(event)"></div>
+        <div class="color-item fas fa-square fa-2x color-5" id="theme5-button" data-theme-id="5"
+          onclick="toggleThemeClick(event)"></div>
       </div>
     </div>
+    <div class="host" id="host-do" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <div class="header th" contenteditable="true">Do</div>
+      <div class="box" id="col-do"></div>
+      <div class="footer fas fa-plus fa-2x" href="#task-modal" data-toggle="modal" data-status-id="Do"
+        data-type-id="new"></div>
+    </div>
+    <div class="host" id="host-today" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <div class="header th" contenteditable="true">Today</div>
+      <div class="box" id="col-today"></div>
+      <div class="footer fas fa-plus fa-2x" href="#task-modal" data-toggle="modal" data-status-id="Today"
+        data-type-id="new"></div>
+    </div>
+    <div class="host" id="host-doing" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <div class="header th" contenteditable="true">Doing</div>
+      <div class="box" id="col-doing"></div>
+      <div class="footer fas fa-plus fa-2x" href="#task-modal" data-toggle="modal" data-status-id="Doing"
+        data-type-id="new"></div>
+    </div>
+    <div class="host" id="host-done" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <div class="header th">Done</div>
+      <div class="box" id="col-done"></div>
+      <div class="footer fas fa-plus fa-2x" href="#task-modal" data-toggle="modal" data-status-id="Done"
+        data-type-id="new"></div>
+    </div>
+  </div>
 
-    <div class='click-area'></div>
-    <div class="logo"><img src="res/moby_bg.png" draggable="false"></div>
+  <div class='click-area'></div>
+  <div class="logo"><img src="res/moby_bg.png" draggable="false"></div>
 
-    <div id="task-modal" class="modal fade" tabindex="-1" role="dialog" style="-webkit-app-region: no-drag">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="task-modal-title">New Task</h5>
-            <button type="button" class="close" data-dismiss="modal">
-              <span>&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="task-form">
-              <div class="form-group">
-                <input class="form-control" id="task-title" placeholder="Title">
-              </div>
-              <div class="form-group">
-                <textarea class="form-control" id="task-detail" placeholder="Detail"></textarea>
-              </div>
-              <div class="form-group">
-                <select class="form-control form-control-sm" id="task-status">
-                  <option>Do</option>
-                  <option>Today</option>
-                  <option>Doing</option>
-                  <option>Done</option>
-                </select>
-              </div>
-              <label for="choose-theme">Color</label>
-              <div class="btn-group btn-group-toggle btn-group-lg" id="choose-theme" data-toggle="buttons">
-                <label class="btn theme-1" active>
-                  <input type="radio" name="options" id="option-1" autocomplete="off" checked value="1"> 
-                </label>
-                <label class="btn theme-2">
-                  <input type="radio" name="options" id="option-2" autocomplete="off" value="2"> 
-                </label>
-                <label class="btn theme-3">
-                  <input type="radio" name="options" id="option-3" autocomplete="off" value="3">
-                </label>
-                <label class="btn theme-4">
-                  <input type="radio" name="options" id="option-4" autocomplete="off" value="4"> 
-                </label>
-                <label class="btn theme-5">
-                  <input type="radio" name="options" id="option-5" autocomplete="off" value="5"> 
-                </label>
-              </div>
-              <div class="panel-group" id="panel-recur">
-                <div class="panel">
-                  <div class="panel-header">
-                    <a class="collapsed" data-toggle="collapse" data-target="#collapse-sched">
-                      <i class="fa fa-chevron-down"></i>
-                      Schedule & Recurrence
-                    </a>
-                  </div>
-                  <div class="panel-body">
-                    <div id="collapse-sched" class="collapse" data-parent="#panel-recur">
-                      <div class="form-group row">
-                        <label class="col-sm-3 col-form-label col-form-label-sm" for="startDate">Start Date</label>
-                        <div class="col-sm-4">
-                          <input class="form-control form-control-sm" id="start-date" placeholder="mm/dd/yyyy">
+  <div id="task-modal" class="modal fade" tabindex="-1" role="dialog" style="-webkit-app-region: no-drag">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="task-modal-title">New Task</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="task-form">
+            <div class="form-group">
+              <input class="form-control" id="task-title" placeholder="Title">
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" id="task-detail" placeholder="Detail"></textarea>
+            </div>
+            <div class="form-group">
+              <select class="form-control form-control-sm" id="task-status">
+                <option>Do</option>
+                <option>Today</option>
+                <option>Doing</option>
+                <option>Done</option>
+              </select>
+            </div>
+            <label for="choose-theme">Color</label>
+            <div class="btn-group btn-group-toggle btn-group-lg" id="choose-theme" data-toggle="buttons">
+              <label class="btn theme-1" active>
+                <input type="radio" name="options" id="option-1" autocomplete="off" checked value="1">
+              </label>
+              <label class="btn theme-2">
+                <input type="radio" name="options" id="option-2" autocomplete="off" value="2">
+              </label>
+              <label class="btn theme-3">
+                <input type="radio" name="options" id="option-3" autocomplete="off" value="3">
+              </label>
+              <label class="btn theme-4">
+                <input type="radio" name="options" id="option-4" autocomplete="off" value="4">
+              </label>
+              <label class="btn theme-5">
+                <input type="radio" name="options" id="option-5" autocomplete="off" value="5">
+              </label>
+            </div>
+            <div class="panel-group" id="panel-recur">
+              <div class="panel">
+                <div class="panel-header">
+                  <a class="collapsed" data-toggle="collapse" data-target="#collapse-sched">
+                    <i class="fa fa-chevron-down"></i>
+                    Schedule & Recurrence
+                  </a>
+                </div>
+                <div class="panel-body">
+                  <div id="collapse-sched" class="collapse" data-parent="#panel-recur">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label col-form-label-sm" for="startDate">Start Date</label>
+                      <div class="col-sm-4">
+                        <input class="form-control form-control-sm" id="start-date" placeholder="mm/dd/yyyy">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div id="choose-recur">
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="radio" class="form-check-input" name="radio-recur" id="radio-once" value="0"
+                            checked="true">
+                          <label class="form-check-label" for="radio-once">One-time</label>
+                        </div>
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="radio" class="form-check-input" name="radio-recur" id="radio-weekly" value="1">
+                          <label class="form-check-label" for="radio-weekly">Weekly</label>
+                        </div>
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="radio" class="form-check-input" name="radio-recur" id="radio-biWeekly" value="2">
+                          <label class="form-check-label" for="radio-biWeekly">Bi-Weekly</label>
+                        </div>
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="radio" class="form-check-input" name="radio-recur" id="radio-triWeekly"
+                            value="3">
+                          <label class="form-check-label" for="radio-triWeekly">Tri-Weekly</label>
+                        </div>
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="radio" class="form-check-input" name="radio-recur" id="radio-monthly" value="4">
+                          <label class="form-check-label" for="radio-Monthly">Monthly</label>
                         </div>
                       </div>
-                      <div class="form-group">
-                        <div id="choose-recur">
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="radio" class="form-check-input" name="radio-recur" id="radio-once" value="0" checked="true">
-                            <label class="form-check-label" for="radio-once">One-time</label>
-                          </div>
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="radio" class="form-check-input" name="radio-recur" id="radio-weekly" value="1">
-                            <label class="form-check-label" for="radio-weekly">Weekly</label>
-                          </div>
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="radio" class="form-check-input" name="radio-recur" id="radio-biWeekly" value="2">
-                            <label class="form-check-label" for="radio-biWeekly">Bi-Weekly</label>
-                          </div>
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="radio" class="form-check-input" name="radio-recur" id="radio-triWeekly" value="3">
-                            <label class="form-check-label" for="radio-triWeekly">Tri-Weekly</label>
-                          </div>
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="radio" class="form-check-input" name="radio-recur" id="radio-monthly" value="4">
-                            <label class="form-check-label" for="radio-Monthly">Monthly</label>
-                          </div>
+                      <fieldset disabled hidden id="choose-days">
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="checkbox" class="form-check-input" id="check-sun">
+                          <label class="form-check-label" for="check-sun">Sun</label>
                         </div>
-                        <fieldset disabled hidden id="choose-days">
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="checkbox" class="form-check-input" id="check-sun">
-                            <label class="form-check-label" for="check-sun">Sun</label>
-                          </div>
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="checkbox" class="form-check-input" id="check-mon">
-                            <label class="form-check-label" for="check-mon">Mon</label>
-                          </div>
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="checkbox" class="form-check-input" id="check-tue">
-                            <label class="form-check-label" for="check-tue">Tue</label>
-                          </div>
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="checkbox" class="form-check-input" id="check-wed">
-                            <label class="form-check-label" for="check-wed">Wed</label>
-                          </div>
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="checkbox" class="form-check-input" id="check-thu">
-                            <label class="form-check-label" for="check-thu">Thu</label>
-                          </div>
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="checkbox" class="form-check-input" id="check-fri">
-                            <label class="form-check-label" for="check-fri">Fri</label>
-                          </div>
-                          <div class="form-check form-check-inline form-control-sm">
-                            <input type="checkbox" class="form-check-input" id="check-sat">
-                            <label class="form-check-label" for="check-sat">Sat</label>
-                          </div>
-                        </fieldset>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-4 col-form-label col-form-label-sm disabled-form-label" for="count-select" id="recur-count">Recurrence Count</label>
-                        <div class="col-sm-3">
-                          <select class="form-control form-control-sm" id="count-select" disabled>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="-1">Forever</option>
-                          </select>
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="checkbox" class="form-check-input" id="check-mon">
+                          <label class="form-check-label" for="check-mon">Mon</label>
                         </div>
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="checkbox" class="form-check-input" id="check-tue">
+                          <label class="form-check-label" for="check-tue">Tue</label>
+                        </div>
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="checkbox" class="form-check-input" id="check-wed">
+                          <label class="form-check-label" for="check-wed">Wed</label>
+                        </div>
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="checkbox" class="form-check-input" id="check-thu">
+                          <label class="form-check-label" for="check-thu">Thu</label>
+                        </div>
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="checkbox" class="form-check-input" id="check-fri">
+                          <label class="form-check-label" for="check-fri">Fri</label>
+                        </div>
+                        <div class="form-check form-check-inline form-control-sm">
+                          <input type="checkbox" class="form-check-input" id="check-sat">
+                          <label class="form-check-label" for="check-sat">Sat</label>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label col-form-label-sm disabled-form-label" for="count-select"
+                        id="recur-count">Recurrence Count</label>
+                      <div class="col-sm-3">
+                        <select class="form-control form-control-sm" id="count-select" disabled>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="-1">Forever</option>
+                        </select>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button id="submit-button" type="button" class="btn btn-primary">Save Changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="restore-modal" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Restore Task</h5>
-            <button type="button" class="close" data-dismiss="modal">
-            <span>&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="host modal-host" id="host-archive">
-              <div class="header">Archive</div>
-              <div class="box" id="col-archive"></div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button id="restore-button" type="button" class="btn btn-primary">Restore Selected</button>
-          </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button id="submit-button" type="button" class="btn btn-primary">Save Changes</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <div id="schedule-modal" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Scheduled Tasks</h5>
-            <button type="button" class="close" data-dismiss="modal">
+  <div id="restore-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Restore Task</h5>
+          <button type="button" class="close" data-dismiss="modal">
             <span>&times;</span>
-            </button>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="host modal-host" id="host-archive">
+            <div class="header">Archive</div>
+            <div class="box" id="col-archive"></div>
           </div>
-          <div class="modal-body">
-            <div class="host modal-host" id="host-schedule">
-              <div class="header">Upcoming</div>
-              <div class="box" id="col-schedule"></div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button id="restore-button" type="button" class="btn btn-primary">Restore Selected</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <script>
-      window.$ = window.jQuery = require('jquery');
-      window.Bootstrap = require('bootstrap');
-      var activeTask;
-    </script>
-    <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="./app.js"></script>
-  </body>
+  <div id="schedule-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Scheduled Tasks</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="host modal-host" id="host-schedule">
+            <div class="header">Upcoming</div>
+            <div class="box" id="col-schedule"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="settings-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="task-modal-title">User Settings</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="settings-form">
+            <div class="d-flex flex-row justify-content-end align-items-center">
+              <div class="p-2">
+                <span id="gh-sync-enabled-text" class="text-primary">
+                  Github Sync Feature Disabled
+                </span>
+              </div>
+              <div class="p-2">
+                <label class="switch">
+                  <input type="checkbox" id="ghSyncEnabled">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+            <hr />
+            <div class="form-group">
+              <label for="ghPersonalAccessToken">Github Personal Access Token</label>
+              <input type="text" class="form-control" id="ghPersonalAccessToken"
+                aria-describedby="ghPersonalAccessTokenHelp" placeholder="Paste Personal Access Token Here">
+              <small id="ghPersonalAccessTokenHelp" class="form-text text-muted">
+                To create a personal access token, click <a href="#" id="gh-new-personal-access-token-button">here</a>
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="ghApiEndpoint">Github API Endpoint</label>
+              <input type="text" class="form-control" id="ghApiEndpoint" aria-describedby="ghApiEndpointHelp"
+                placeholder="Optional: Paste Github API Endpoint Here">
+              <small id="ghApiEndpointHelp" class="form-text text-muted">
+                Optional Setting for Github Enterprise Users
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="ghRepository">Github Repository</label>
+              <input type="text" class="form-control" id="ghRepository" aria-describedby="ghRepositoryHelp"
+                placeholder="Github Repository Url Here">
+              <small id="ghRepositoryHelp" class="form-text text-muted">
+                The Github Repository Url you want to sync with
+              </small>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.$ = window.jQuery = require('jquery');
+    window.Bootstrap = require('bootstrap');
+    var activeTask;
+  </script>
+  <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="./app.js"></script>
+</body>
+
 </html>
