@@ -24,6 +24,10 @@
         onclick="expandAll(event)"></div>
       <div class="menu-item fas fa-compress-arrows-alt fa-2x" data-toggle="tooltip" title="Collapse All"
         onclick="collapseAll(event)"></div>
+      <span href="#sync-modal" data-toggle="modal">
+        <div class="menu-item fas fa-sync fa-2x" data-toggle="tooltip" title="Sync Tasks" style="padding-top: 0;">
+        </div>
+      </span>
       <div class="menu-item fas fa-sign-out-alt fa-2x" data-toggle="tooltip" title="Exit" onclick="exit(event)"></div>
       <div class="theme-toggle" data-toggle="tooltip" title="Filter Tasks">
         <div class="color-item fas fa-square fa-2x color-1" id="theme1-button" data-theme-id="1"
@@ -260,6 +264,32 @@
     </div>
   </div>
 
+  <div id="sync-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="task-modal-title">Sync Tasks</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container d-flex h-100 w-400">
+            <div class="row justify-content-center align-self-center">
+              <span class="text-default" id="sync-tasks-info-message"></span>
+              <span class="text-success" id="sync-tasks-success-message"></span>
+              <span class="text-danger" id="sync-tasks-error-message"></span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button id="sync-tasks-button" type="button" class="btn btn-primary">Sync Tasks</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="settings-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -279,33 +309,33 @@
               </div>
               <div class="p-2">
                 <label class="switch">
-                  <input type="checkbox" id="ghSyncEnabled">
+                  <input type="checkbox" id="gh-sync-enabled">
                   <span class="slider round"></span>
                 </label>
               </div>
             </div>
             <hr />
             <div class="form-group">
-              <label for="ghPersonalAccessToken">Github Personal Access Token</label>
-              <input type="text" class="form-control" id="ghPersonalAccessToken"
-                aria-describedby="ghPersonalAccessTokenHelp" placeholder="Paste Personal Access Token Here">
-              <small id="ghPersonalAccessTokenHelp" class="form-text text-muted">
+              <label for="gh-personal-access-token">Github Personal Access Token</label>
+              <input type="text" class="form-control" id="gh-personal-access-token"
+                aria-describedby="gh-personal-access-token-help" placeholder="Paste Personal Access Token Here">
+              <small id="gh-personal-access-token-help" class="form-text text-muted">
                 To create a personal access token, click <a href="#" id="gh-new-personal-access-token-button">here</a>
               </small>
             </div>
             <div class="form-group">
-              <label for="ghApiEndpoint">Github API Endpoint</label>
-              <input type="text" class="form-control" id="ghApiEndpoint" aria-describedby="ghApiEndpointHelp"
+              <label for="gh-api-endpoint">Github API Endpoint</label>
+              <input type="text" class="form-control" id="gh-api-endpoint" aria-describedby="gh-api-endpoint-help"
                 placeholder="Optional: Paste Github API Endpoint Here">
-              <small id="ghApiEndpointHelp" class="form-text text-muted">
+              <small id="gh-api-endpoint-help" class="form-text text-muted">
                 Optional Setting for Github Enterprise Users
               </small>
             </div>
             <div class="form-group">
-              <label for="ghRepository">Github Repository</label>
-              <input type="text" class="form-control" id="ghRepository" aria-describedby="ghRepositoryHelp"
+              <label for="gh-repository">Github Repository</label>
+              <input type="text" class="form-control" id="gh-repository" aria-describedby="gh-repository-help"
                 placeholder="Github Repository Url Here">
-              <small id="ghRepositoryHelp" class="form-text text-muted">
+              <small id="gh-repository-help" class="form-text text-muted">
                 The Github Repository Url you want to sync with
               </small>
             </div>

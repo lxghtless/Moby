@@ -36,7 +36,7 @@ const isNullOrEmpty = (str) => {
 }
 
 const createOrUpdateTasksFile = async ({
-  tasksJson,
+  json,
   fileName,
   ghRepository,
   ghPersonalAccessToken,
@@ -61,9 +61,9 @@ const createOrUpdateTasksFile = async ({
     repo
   } = parseGhRepository(ghRepository)
 
-  const tasksJsonStr = JSON.stringify(tasksJson, null, 4)
-  const tasksContentBuffer = Buffer.from(tasksJsonStr, 'utf8')
-  const tasksContentBase64 = tasksContentBuffer.toString('base64')
+  const jsonStr = JSON.stringify(json, null, 4)
+  const jsonBuffer = Buffer.from(jsonStr, 'utf8')
+  const jsonBase64 = jsonBuffer.toString('base64')
 
   let existing
 
@@ -94,7 +94,7 @@ const createOrUpdateTasksFile = async ({
     repo,
     path: fileName,
     message: `tasks json file ${fileName} ${messageVerb} via Moby`,
-    content: tasksContentBase64,
+    content: jsonBase64,
     sha
   })
 
@@ -118,10 +118,23 @@ const serviceFactory = () => ({
   },
   /** @prop flag indicating if the service has been initialized or not */
   initialized: false,
+  /** @prop flag indicating if the sync service has been initialized or not */
+  initializedSync: false,
   /**
    * Loads initial state and wires on dom events
    */
   load () {
+    if (!this.initialized) {
+      // wire dom events to service handlers
+      $('#gh-new-personal-access-token-button').click(this.onOpenNewGhPersonalAccessTokenClick)
+      $('#gh-sync-enabled').change(this.onGhSyncEnabledToggle)
+      $('#gh-personal-access-token').change(this.onGhPersonalAccessTokenChange)
+      $('#gh-api-endpoint').change(this.onGhApiEndpointChange)
+      $('#gh-repository').change(this.onGhRepositoryChange)
+
+      this.initialized = true
+    }
+
     const {
       ghSyncEnabled,
       ghPersonalAccessToken,
@@ -130,22 +143,21 @@ const serviceFactory = () => ({
     } = this.getSettings()
 
     // load state
-    $('#ghSyncEnabled').prop('checked', ghSyncEnabled)
-    $('#ghPersonalAccessTokent').text(ghPersonalAccessToken)
-    $('#ghApiEndpoint').text(ghApiEndpoint)
-    $('#ghRepository').text(ghRepository)
-    $('#gh-sync-enabled-text').text(service.getGhSyncEnabledText())
-
-    if (!this.initialized) {
-      // wire dom events to service handlers
-      $('#gh-new-personal-access-token-button').click(this.onOpenNewGhPersonalAccessTokenClick)
-      $('#ghSyncEnabled').change(this.onGhSyncEnabledToggle)
-      $('#ghPersonalAccessTokent').change(this.onGhPersonalAccessTokenChange)
-      $('#ghApiEndpoint').change(this.onGhApiEndpointChange)
-      $('#ghRepository').change(this.onGhRepositoryChange)
-
-      this.initialized = true
+    $('#gh-personal-access-token').val(ghPersonalAccessToken)
+    $('#gh-api-endpoint').val(ghApiEndpoint)
+    $('#gh-repository').val(ghRepository)
+    $('#gh-sync-enabled').prop('checked', ghSyncEnabled)
+    $('#gh-sync-enabled-text').text(this.getGhSyncEnabledText())
+  },
+  loadSync () {
+    if (!this.initializedSync) {
+      $('#sync-tasks-button').click(this.onSyncTasksClick)
+      this.initializedSync = true
     }
+
+    $('#sync-tasks-success-message').text('')
+    $('#sync-tasks-danger-message').text('')
+    $('#sync-tasks-info-message').text('Click "Sync Tasks" to save local headers & tasks with your configured Github settings')
   },
   /**
    * Sets new SettingsType value
@@ -224,23 +236,67 @@ const serviceFactory = () => ({
     const settings = service.getSettings()
     settings.ghSyncEnabled = !settings.ghSyncEnabled
     service.setSettings(settings)
-    $('#ghPersonalAccessToken').prop('readonly', !settings.ghSyncEnabled)
-    $('#ghApiEndpoint').prop('readonly', !settings.ghSyncEnabled)
-    $('#ghRepository').prop('readonly', !settings.ghSyncEnabled)
-    $('#ghSyncEnabled').prop('checked', settings.ghSyncEnabled)
+    $('#gh-personal-access-token').prop('readonly', !settings.ghSyncEnabled)
+    $('#gh-api-endpoint').prop('readonly', !settings.ghSyncEnabled)
+    $('#gh-repository').prop('readonly', !settings.ghSyncEnabled)
+    $('#gh-sync-enabled').prop('checked', settings.ghSyncEnabled)
     $('#gh-sync-enabled-text').text(service.getGhSyncEnabledText())
   },
   onGhPersonalAccessTokenChange: () => {
-    const ghPersonalAccessToken = $('#ghPersonalAccessToken').val()
+    const ghPersonalAccessToken = $('#gh-personal-access-token').val()
     service.mergeSettings({ ghPersonalAccessToken })
   },
   onGhApiEndpointChange: () => {
-    const ghApiEndpoint = $('#ghApiEndpoint').val()
+    const ghApiEndpoint = $('#gh-api-endpoint').val()
     service.mergeSettings({ ghApiEndpoint })
   },
   onGhRepositoryChange: () => {
-    const ghRepository = $('#ghRepository').val()
+    const ghRepository = $('#gh-repository').val()
     service.mergeSettings({ ghRepository })
+  },
+  onSyncTasksClick: async () => {
+    try {
+      $('#sync-tasks-success-message').text('')
+      $('#sync-tasks-danger-message').text('')
+      $('#sync-tasks-info-message').text('sync in progress...')
+      const headers = localStorage.getItem('headers') || '[]'
+      const taskList = localStorage.getItem('taskList') || '{}'
+      const {
+        ghRepository,
+        ghPersonalAccessToken,
+        ghApiEndpoint
+      } = service.getSettings()
+
+      let params = {
+        json: JSON.parse(headers),
+        fileName: 'moby-headers.json',
+        ghRepository,
+        ghPersonalAccessToken,
+        ghApiEndpoint
+      }
+
+      await createOrUpdateTasksFile(params)
+
+      $('#sync-tasks-info-message').text('headers sync complete. sync tasks in progress...')
+      console.log('sync headers complete. sync tasks started')
+
+      params = {
+        json: JSON.parse(taskList),
+        fileName: 'moby-tasks.json',
+        ghRepository,
+        ghPersonalAccessToken,
+        ghApiEndpoint
+      }
+
+      await createOrUpdateTasksFile(params)
+
+      $('#sync-tasks-info-message').text('')
+      $('#sync-tasks-success-message').text('headers and tasks sync completed.')
+      console.log('sync complete')
+    } catch (error) {
+      $('#sync-tasks-error-message').text('whoops! something went wrong :(')
+      console.error(error)
+    }
   }
 })
 

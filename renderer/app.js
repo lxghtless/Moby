@@ -204,6 +204,10 @@ window.openSettings = () => {
   $('#settings-modal').modal('show')
 }
 
+$('#sync-modal').on('show.bs.modal', (e) => {
+  appSettings.loadSync()
+})
+
 // Task modal load event
 $('#task-modal').on('show.bs.modal', (e) => {
   var type = $(e.relatedTarget).data('type-id') ? $(e.relatedTarget).data('type-id') : taskType
